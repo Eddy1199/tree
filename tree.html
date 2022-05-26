@@ -1,0 +1,60 @@
+<canvas id="myCanvas" width="1000" height="800" ></canvas>
+
+<script type="text/javascript">
+
+   var canvas = document.getElementById('myCanvas');
+   var ctx = canvas.getContext('2d');
+   var maxdepth =7, width=8, length=200;
+   var curdepth = 0;
+   var k=0.75;
+   var alph=Math.PI/6;
+
+   function growtree()
+   {
+       ctx.translate(500,800);
+       branch(-Math.PI/2);
+    }
+
+    function branch(angle)
+    {
+        curdepth++;
+        ctx.save();
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = width;
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(length,0);
+        ctx.stroke();
+        ctx.translate(length,0);
+        ctx.scale(k, k);
+        if(curdepth <= maxdepth){
+        if (Math.random()>0.7)
+        {
+            branch(randomRange(-alph,0));
+            branch(randomRange(0,alph));
+        } else {
+            branch(randomRange(-alph,0));
+            branch(randomRange(-alph,alph));
+            branch(randomRange(0,alph));
+        }
+        } else
+        {
+            ctx.fillStyle = 'red';
+            ctx.beginPath();
+            ctx.arc(0,0,20,0,Math.PI*2,true);
+            ctx.fill();
+        };
+        
+        ctx.restore();
+        curdepth--;
+   }
+  
+function randomRange(min,max)
+   {
+        return Math.random()*(max-min) + min;
+   }
+   
+   growtree();
+
+</script>
